@@ -176,8 +176,12 @@ int main() { // main function
 		//Duplicate(Header, DuplicateHeader,counterEight);
 		//(*ResetCounterTwo)++;
 		//}
-			Print(Header, counterTwo);
+		//Print(Header, counterTwo);
 			(*SortedHeader).setNext(NULL);
+			Print(Header, counterTwo);
+			Print(SortedHeader, counterTwo);
+			cout << "Size" << endl;
+			cout << (*LSize) << endl;
 		SortList(Header, SortedHeader, counterSix, Least, Beginning, counterSeven, previous, counterThree, counterFour,  counterFive, counterNine, counterTen, size, Header, sizeTwo, LSize, counterThis);
 		//Duplicate(SortedHeader, DuplicateHeader,counterEight);
 		cout << "Print" << endl;
@@ -421,7 +425,7 @@ void SortList(Node* ListFront, Node* SortedFront, int* counterSix, int* Least, N
 	(*counterSeven) = 0;
 	cout << (*Least) << endl;
 	(*getEnd(SortedFront)).setNext(MatchGPA((*Beginning).getNext(), Least, counterSeven));
-       (*getEnd(SortedFront)).setNext(NULL);
+	//(*getEnd(SortedFront)).setNext(NULL);
 	(*counterSeven) = 0;
 	//Beginning = MatchGPA(Beginning, Least, counterSeven);
 	(*previous) = NULL;
@@ -446,6 +450,11 @@ void SortList(Node* ListFront, Node* SortedFront, int* counterSix, int* Least, N
 	  cout << (*LSize) << endl;
 	  
 	  (*sizeTwo) = 0;
+	  (*counterTen) = 0;
+	  //Print(ListFront, counterTen);
+	  //(*counterTen) = 0;
+	  Print(SortedFront, counterTen);
+	  (*counterTen) = 0;
 	  cout << (*counterTen) << endl;
 	  cout << (*sizeTwo) << endl;
 	  cout << (*Size(SortedFront, counterTen, sizeTwo)) << endl;
@@ -549,6 +558,7 @@ void Ignore(Node* ListTail, int* DeleteID, Node* previous, int* counterThree, in
 	//delete ListTail;
 	//(*previous).setNext(NULL);
 	(*previous).setNext((*ListTail).getNext());
+	(*ListTail).setNext(NULL);
 	//delete ListTail;
 	return;
       }
