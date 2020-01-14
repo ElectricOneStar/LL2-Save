@@ -25,7 +25,6 @@ int main() { // main function
   Student* temp = new Student;
   Student* tempTwo = new Student;
   Student* tempThree = new Student;
-  //Student* tempThree = new Student;
  Student* tempFour = new Student;
   Node* previous = new Node(NULL);
   Node* Header = new Node(temp);
@@ -35,7 +34,7 @@ int main() { // main function
   int* DeletedID = new int;
   int* LSize = new int;
   (*LSize) = 0;
-  //  vector<Student*>* v = new vector<Student*>;
+
   cout << "Welcome to StudentList. Here you can add, print, or delete sets of information about studnet. each set has the first name, last name, ID number, and GPA for the student. if you want to quit this app then type QUIT" << endl;
   char input[20];
   char quit[5];
@@ -81,9 +80,7 @@ int main() { // main function
     float* num = new float;
     (*num) = 0;
     do{ // Continues running the programm until the QUIT funciton
-	    cout << "What would you like to do?" << endl;
-	    //if(strcmp(input, subtract) == 0){
-	    // cout << "are you sure you want to quit y/n" << endl;
+      cout << "What would you like to do?" << endl;
 	    cin.get(input, 20); // asks and gets input
 	    cin.clear();
 	    cin.ignore();
