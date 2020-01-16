@@ -3,6 +3,7 @@
 #include <iostream> // header file for the student class
 //#include "Node.h"
 #include <cstring> // libraries
+#include <cstdlib>
 using namespace std;
 
 class Student{ // student class
