@@ -3,14 +3,13 @@ Linked List Part 2 by Andrew Thomas Mr.Galbraith P3 C++ Class 1/15/19. I used Al
  */
 #include <iostream> // initializes libraries
 #include <cstring>
-#include <cstdlib>
 //#include <vector>
 #include <cmath>
 #include "Node.h"
 //#include "Student.h"
 #include <iomanip>
 using namespace std; // uses namespace std
-void Add(Node* ListTail); // initializes the function
+Student* Add(Node* ListTail); // initializes the function
 void Subtract(Node* ListTail, int* DeletedID, Node* previous, int* counterThree, int* counterFour, int* counterFive);
 void Print(Node* ListTail, int* counterTwo);
 Node* getEnd(Node* Current);
@@ -20,6 +19,7 @@ Node* MatchGPA(Node* ListFront,int* Least, int* counterSeven);
 void Ignore(Node* ListTail, int* DeleteID, Node* previous, int* counterThree, int* counterFour, int* counterFive, int* LSize);
 void Duplicate(Node* Header, Node* DuplicateHeader, int* counterEight);
 int* Size(Node* Header, int* counterTen, int* size);
+void CheckDuplicate(Node* header, bool* Dup, int* counterOne, int* DupID);
 int main() { // main function
   bool stop = false; // initializes the variables
   char stopChar;
@@ -34,8 +34,11 @@ int main() { // main function
   Node* Beginning = new Node(tempThree);
   int* DeletedID = new int;
   int* LSize = new int;
+  
   (*LSize) = 0;
-
+  bool* Dup = new bool;
+  int* DupID = new int;
+  (*Dup) = false;
   cout << "Welcome to StudentList. Here you can add, print, or delete sets of information about studnet. each set has the first name, last name, ID number, and GPA for the student. if you want to quit this app then type QUIT" << endl; // introduciton
   char input[20];
   char quit[5];
@@ -80,13 +83,42 @@ int main() { // main function
     (*sum) = 0;
     float* num = new float;
     (*num) = 0;
+    Student* temporary = new Student;
     do{ // Continues running the programm until the QUIT funciton
       cout << "What would you like to do?" << endl;
 	    cin.get(input, 20); // asks and gets input
 	    cin.clear();
 	    cin.ignore();
+	    //temporary = Add(getEnd(Header));
 	    if(strcmp(input, "ADD") == 0){ // ADD function
-	      Add(getEnd(Header));
+	      //cout << "here " << endl;  
+	       temporary = Add(getEnd(Header));
+	      (*counterNine) = 0;
+	      // cout << "here2" << endl;
+	      //Print(Header, counterTwo);
+	      //cout << ""
+	      if((*Header).getNext() != NULL){
+	      CheckDuplicate(Header, Dup, counterNine, (*temporary).getID());
+	      }
+	      else{
+
+	      }
+	      (*counterNine) = 0;
+	      //cout << "Here3" << endl;
+	      if((*Dup) == false){ 
+		//Add(getEnd(Header));
+		Node* newNode = new Node(temporary);
+		(*getEnd(Header)).setNext(newNode);
+		
+	      }
+	      else{
+		cout << "There is already a student with this ID." << endl;
+		(*Dup) = false;
+	      }
+	      //	      (*counterNine) = 0;
+	      // Print(Header, counterTwo);
+	      //CheckDuplicate(Header, Dup, counterNine, DupID);
+	      //(*counterNine) = 0;
 		  } 
 	    else if(strcmp(input, "DELETE") == 0){ // DELETE function
 	      if((*Header).getNext() != NULL){
@@ -94,7 +126,9 @@ int main() { // main function
 	      cin >> (*DeletedID);
 	      cin.clear();
 	      cin.ignore();
+	      //cout << "LOL" << endl;
 	      Subtract(Header, DeletedID, previous, counterThree, counterFour, counterFive);
+	      // cout << "LOL2" << endl;
 	      if((*counterFour) == 0){
 		  cout << "That ID does not match any ID of the students" << endl;
 		}
@@ -129,7 +163,7 @@ int main() { // main function
 			//cout << (*LSize) << endl;
 			SortList(Header, SortedHeader, counterSix, Least, Beginning, counterSeven, previous, counterThree, counterFour,  counterFive, counterNine, counterTen, size, Header, sizeTwo, LSize, counterThis); // sorts the list
 		
-		cout << "Print" << endl;
+			//	cout << "Print" << endl;
 		(*counterTwo) = 0;
 		
 		
@@ -138,7 +172,7 @@ int main() { // main function
 		Print(SortedHeader, counterTwo); // prints the list
 	       
 		Duplicate(SortedHeader, Header, counterEight); // resets the initial list
-		
+		//Duplicate(Header, SortedHeader, counterEight);
 		(*counterTwo) = 0; // resetting the counters
 		(*counterEight) = 0;
 	(*SortedHeader).setNext(NULL);
@@ -169,9 +203,12 @@ int main() { // main function
 	    
 	  }
     while(stop == false); // keeps going while stop is false
-	  return 0;
+    //if((*Dup) == true){
+    //cout << "There are two studnets in the list with duplicate ID's" << endl;
+    //}
+    return 0;
 }
-void Add(Node* Current){ // creates the student pointer to add to vector
+Student* Add(Node* Current){ // creates the student pointer to add to vector
   
     Student *create = new Student(); // student created
   cout << "Please enter the student's name." << endl;
@@ -193,8 +230,12 @@ void Add(Node* Current){ // creates the student pointer to add to vector
     cin.clear();
     cin.ignore();
     (*create).setGPA(GPA);
+
+    /*
     Node* newNode = new Node(create);
     (*Current).setNext(newNode);
+    */
+    return create;
 }
 void Subtract(Node* ListTail, int* DeleteID, Node* previous, int* counterThree, int* counterFour, int* counterFive){ // deletes the student from the vector
   if((*counterThree) == 0){
@@ -206,33 +247,41 @@ void Subtract(Node* ListTail, int* DeleteID, Node* previous, int* counterThree, 
     cout << "Deleted" << endl;
     (*counterFour)++;
     if((*ListTail).getNext() != NULL){ // DELETE node is in middle or beginning
-	(*previous).setNext((*ListTail).getNext());
-	delete ListTail;
+      // cout << "Deleted1" << endl;
+      (*previous).setNext((*ListTail).getNext());
+      //cout << "a" << endl;
+      delete ListTail;
+      //cout << "Here1" << endl;
 	return;
+	//cout << "Here2" << endl;
       }
     else if(ListTail == NULL){ // DELETE node is at the end
+      //cout << "Here3" << endl;
       return;
     }
       else{
 	
-	
+	//cout << "Deleted2" << endl;
 	(*previous).setNext(NULL); 
-	 
+	// cout << "b" << endl;
 	delete ListTail;
-	
+	//cout << "Here4" << endl;
 	return;
-       
+	//cout << "Here5" << endl;
       }
   }
-  else{
-    
-  }
+  //else{
+  //cout << "wow1" << endl;
+  //}
   
   if((*ListTail).getNext() != NULL){ // recusive function that goes through the list until it matches the ID
+    //cout << "This" << endl;
     previous = ListTail; 
     Subtract((*ListTail).getNext(), DeleteID, previous, counterThree, counterFour, counterFive); 
 	}
   else{
+    //cout << "wow" << endl;
+    return;
   }
   
 }
@@ -297,19 +346,22 @@ void SortList(Node* ListFront, Node* SortedFront, int* counterSix, int* Least, N
     
       SortList((*ListFront).getNext(), SortedFront, counterSix, Least, Beginning, counterSeven,  previous, counterThree, counterFour, counterFive, counterNine, counterTen, size, Header, sizeTwo, LSize, counterThis);
   }
+  //cout << "Here" << endl;
     else{
-     
+      // cout << "Here" << endl;
       if((*counterNine) == 0){ // picks the least
-	
+	//cout << "LOL" << endl;
 	(*counterNine)++;
 	(*Least) = (*(*(*ListFront).getStudent()).getID());
-	cout << (*Least) << endl;
+	//cout << (*Least) << endl;
+	//cout << "Here1" << endl;
       }
       else{ // compares the least to the ID of the current student
     if((*Least) > (*(*(*ListFront).getStudent()).getID())){
-      
+      //cout << "LOL2" << endl;
       (*Least) = (*(*(*ListFront).getStudent()).getID());
-      cout << (*Least) << endl;
+      //cout << (*Least) << endl;
+      // cout << "Here2" << endl;
     }
     else{
       
@@ -320,10 +372,10 @@ void SortList(Node* ListFront, Node* SortedFront, int* counterSix, int* Least, N
 	SortList((*ListFront).getNext(), SortedFront, counterSix, Least, Beginning, counterSeven,  previous, counterThree, counterFour, counterFive, counterNine, counterTen, size, ListFront, sizeTwo, LSize, counterThis);
     }
       else{
-	
-	cout << (*(*(*MatchGPA((*Beginning).getNext(), Least, counterSeven)).getStudent()).getID()) << endl;
+	//cout << "Here3" << endl;
+	//cout << (*(*(*MatchGPA((*Beginning).getNext(), Least, counterSeven)).getStudent()).getID()) << endl;
 	(*counterSeven) = 0;
-	cout << (*Least) << endl;
+	//cout << (*Least) << endl;
 	(*getEnd(SortedFront)).setNext(MatchGPA((*Beginning).getNext(), Least, counterSeven)); // put the node with the least value into the sorted list
 	
 	(*counterSeven) = 0;
@@ -332,10 +384,10 @@ void SortList(Node* ListFront, Node* SortedFront, int* counterSix, int* Least, N
 	(*counterThree) = 0;
 	  (*counterFour) = 0;
 	  (*counterFive) = 0;
-	 
+	  //cout << "Here4" << endl;
 	  Ignore((*Beginning).getNext(), Least, previous, counterThree, counterFour, counterFive, LSize); // ignores the least node in the unsorted header so it wont get picked again
 	(*previous) = NULL;
-
+	//cout << "Here5" << endl;
 	(*counterThree) = 0; // reset some counters
 	  (*counterFour) = 0;
 	  (*counterFive) = 0;
@@ -344,19 +396,23 @@ void SortList(Node* ListFront, Node* SortedFront, int* counterSix, int* Least, N
 	  
 	  (*counterTen) = 0;
 	  (*size) = 0;
-	  cout << (*LSize) << endl;
+	  //cout << (*LSize) << endl;
 	  
 	  (*sizeTwo) = 0;
 	  (*counterTen) = 0;
-	 
-	  Print(SortedFront, counterTen);
+	  //cout << "Here6" << endl;
+	  // Print(SortedFront, counterTen);
 	  (*counterTen) = 0;
-	  cout << (*counterTen) << endl;
-	  cout << (*sizeTwo) << endl;
-	  cout << (*Size(SortedFront, counterTen, sizeTwo)) << endl;
+	  //cout << (*counterTen) << endl;
+	  //cout << (*sizeTwo) << endl;
+	  // cout << (*Size(SortedFront, counterTen, sizeTwo)) << endl;
+	  (*sizeTwo) = 0;
+	  //cout << (*Size(ListFront, counterTen, sizeTwo)) << endl;
 	  (*counterTen) = 0;
 	  (*sizeTwo) = 0;
+	  //cout << "Here7" << endl;
 	  if((*LSize) != (*Size(SortedFront, counterTen, sizeTwo))){ // checks if the size of the sorted list does not match the initial size of the unsorted list
+	    //cout << "Here8" << endl;
 	    (*counterTen) = 0;
 	  (*sizeTwo) = 0;
 	    (*counterSix) = 0;
@@ -455,3 +511,31 @@ void Ignore(Node* ListTail, int* DeleteID, Node* previous, int* counterThree, in
   }
  
 }
+void CheckDuplicate(Node* header, bool* Dup, int* counterOne, int* DupID){ // checks if invalid input
+  if((*counterOne) == 0){
+    (*counterOne)++;
+    //cout << "here" << endl;
+    //Print(header);
+    CheckDuplicate((*header).getNext(), Dup, counterOne, DupID);
+
+    // cout << "here" << endl;
+  }
+    if((*(*(*header).getStudent()).getID()) == (*DupID)){
+      //cout << "Dup" << endl;
+    // cout << "here3" << endl;
+    (*Dup) = true;
+    return;
+    }
+  if((*header).getNext() != NULL){
+    //cout << "here4" << endl;
+    CheckDuplicate((*header).getNext(), Dup, counterOne, DupID);
+  }
+  else{
+    //cout << "here5" << endl;
+  //(*counterOne) = 3;
+  //cout << (*counterOne);
+  return;
+  }
+}
+
+  
